@@ -21,8 +21,8 @@
             <h1>Stay Accountable. Achieve More. 🚀</h1>
             <p>Join the community of motivated individuals committed to achieving their goals. Share your progress, stay accountable, and support each other every step of the way.</p>
             <button class="button" onclick="document.getElementById('waitlist-section').scrollIntoView({ behavior: 'smooth' });">Join the Waitlist</button>
-            <button class="button discord-button" onclick="window.location.href='https://discord.gg/N2jSwSZr8g'">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg" alt="Discord Logo" width="20" height="20"> Join Beta Test
+            <button class="button discord" onclick="window.location.href='https://discord.gg/N2jSwSZr8g'">
+                Join Beta Test
             </button>
         </div>
         <img src="your-app-image.png" alt="App Screenshot" class="app-image">
@@ -58,7 +58,7 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
 
-            fetch('http://localhost:3000/api/waitlist', {
+            fetch('/api/waitlist', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
