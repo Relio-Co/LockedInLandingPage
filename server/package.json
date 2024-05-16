@@ -1,0 +1,16 @@
+{
+    "name": "lockedin",
+    "version": "1.0.0",
+    "description": "LockedIn App Waitlist",
+    "main": "app.js",
+    "scripts": {
+      "start": "node app.js"
+    },
+    "dependencies": {
+      "body-parser": "^1.19.0",
+      "cors": "^2.8.5",
+      "csv-writer": "^1.6.0",
+      "express": "^4.17.1"
+    }
+  }
+  
