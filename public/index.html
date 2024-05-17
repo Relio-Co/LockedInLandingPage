@@ -9,11 +9,14 @@
 </head>
 <body>
     <div class="nav">
-        <div class="logo">LockedIn</div>
-        <div>
+        <div class="logo-container" id="logo-container">
+            <div class="logo">Locked</div>
+            <img src="logo.png" class="logophoto" alt="Logo Photo">
+        </div>
+        <div class="links">
             <a href="#features">Features</a>
-            <a href="#waitlist">Waitlist</a>
-            <a href="https://discord.com/invite/your-discord-invite-link">Beta Test</a>
+            <a href="#waitlist" id="nav-waitlist">Waitlist</a>
+            <a href="https://discord.com/invite/N2jSwSZr8g">Beta Test</a>
         </div>
     </div>
     <div class="hero">
@@ -74,6 +77,15 @@
                 console.error('Error:', error);
                 alert('There was an error adding your email to the waitlist.');
             });
+        });
+
+        document.getElementById('nav-waitlist').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('waitlist-section').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.getElementById('logo-container').addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
