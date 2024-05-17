@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache-dependency-path: /home/ubuntu/actions-runner/_work/LockedInLandingPage/LockedInLandingPage/server/
+          cache-dependency-path: /home/ubuntu/actions-runner/_work/LockedInLandingPage/LockedInLandingPage/
           cache: "npm"
       - run: cd server
       - run: pwd
