@@ -25,6 +25,8 @@ jobs:
           cache-dependency-path: /home/ubuntu/actions-runner/_work/LockedInLandingPage/LockedInLandingPage/server/
           cache: "npm"
       - run: cd server
+      - run: pwd
+      - run: cat package.json
       - run: npm install
       - run: npm run build --if-present
       - run: npm test
