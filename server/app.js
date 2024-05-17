@@ -34,7 +34,7 @@ app.post('/api/waitlist', (req, res) => {
     
     csvWriter.writeRecords([{ email, timestamp }])
         .then(() => {
-            res.status(200).send('Email added to waitlist');
+            res.status(200).send('Email added to waitlist!');
         })
         .catch(error => {
             console.error(error);
