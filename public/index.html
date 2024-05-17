@@ -1,80 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LockedIn - Accountability Social Media</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="nav">
-        <div class="logo">LockedIn</div>
-        <div>
-            <a href="#features">Features</a>
-            <a href="#waitlist">Waitlist</a>
-            <a href="https://discord.com/invite/your-discord-invite-link">Beta Test</a>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LockedIn - Accountability Social Media</title>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFN04Y0K71"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+    
+          gtag('config', 'G-DFN04Y0K71');
+        </script>
+    </head>
+    
+    <body>
+        <div class="nav">
+            <div class="logo">LockedIn</div>
+            <div>
+                <a href="#features">Features</a>
+                <a href="#waitlist">Waitlist</a>
+                <a href="https://discord.com/invite/your-discord-invite-link">Beta Test</a>
+            </div>
         </div>
-    </div>
-    <div class="hero">
-        <div class="hero-text">
-            <h1>Stay Accountable. Achieve More. 🚀</h1>
-            <p>Get LockedIn with friends to build new habits, improve existing ones, and stay motivated together. LockedIn offers insights and accountability to ensure your success. We're looking for BETA testers to help us improve LockedIn and launch!</p>
-            <button class="button" onclick="document.getElementById('waitlist-section').scrollIntoView({ behavior: 'smooth' });">Join the Waitlist</button>
-            <button class="button discord" onclick="window.location.href='https://discord.gg/N2jSwSZr8g'">
-                Join Beta Test
-            </button>
+        <div class="hero">
+            <div class="hero-text">
+                <h1>Stay Accountable. Achieve More. 🚀</h1>
+                <p>Get LockedIn with friends to build new habits, improve existing ones, and stay motivated together. LockedIn offers insights and accountability to ensure your success. We're looking for BETA testers to help us improve LockedIn and launch!</p>
+                <button class="button" onclick="joinWaitlist()">Join the Waitlist</button>
+                <button class="button discord" onclick="joinBetaTest()">Join Beta Test</button>
+            </div>
+            <img src="LockedIn.png" alt="App Screenshot" class="app-image">
         </div>
-        <img src="LockedIn.png" alt="App Screenshot" class="app-image">
-    </div>
-    <div class="features" id="features">
-        <div class="feature">
-            <h3>Track Your Progress 📈</h3>
-            <p>Keep a daily log of your activities and see how far you've come.</p>
+        <div class="features" id="features">
+            <div class="feature">
+                <h3>Track Your Progress 📈</h3>
+                <p>Keep a daily log of your activities and see how far you've come.</p>
+            </div>
+            <div class="feature">
+                <h3>Stay Motivated 💪</h3>
+                <p>Connect with friends and share your progress to stay motivated.</p>
+            </div>
+            <div class="feature">
+                <h3>Achieve Your Goals 🏆</h3>
+                <p>Set goals and crush them with the support of the LockedIn community.</p>
+            </div>
         </div>
-        <div class="feature">
-            <h3>Stay Motivated 💪</h3>
-            <p>Connect with friends and share your progress to stay motivated.</p>
+        <div class="cta" id="waitlist-section">
+            <h2>Get Early Access 🎉</h2>
+            <p>Join our waitlist to be one of the first to try LockedIn.</p>
+            <form id="waitlist-form">
+                <input type="email" id="email" placeholder="Enter your email" required>
+                <br>
+                <button type="submit" class="button">Join Waitlist</button>
+            </form>
         </div>
-        <div class="feature">
-            <h3>Achieve Your Goals 🏆</h3>
-            <p>Set goals and crushh them with the support of the LockedIn community.</p>
+        <div class="footer">
+            © 2024 LockedIn. All rights reserved.
         </div>
-    </div>
-    <div class="cta" id="waitlist-section">
-        <h2>Get Early Access 🎉</h2>
-        <p>Join our waitlist to be one of the first to try LockedIn.</p>
-        <form id="waitlist-form">
-            <input type="email" id="email" placeholder="Enter your email" required>
-            <br>
-            <button type="submit" class="button">Join Waitlist</button>
-        </form>
-    </div>
-    <div class="footer">
-        © 2024 LockedIn. All rights reserved.
-    </div>
-    <script>
-        document.getElementById('waitlist-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-
-            fetch('/api/waitlist', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email })
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);
-                document.getElementById('waitlist-form').reset();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error adding your email to the waitlist.');
+        <script>
+            function joinWaitlist() {
+                gtag('event', 'click', {
+                    'event_category': 'Button',
+                    'event_label': 'Join Waitlist'
+                });
+                document.getElementById('waitlist-section').scrollIntoView({ behavior: 'smooth' });
+            }
+    
+            function joinBetaTest() {
+                gtag('event', 'click', {
+                    'event_category': 'Button',
+                    'event_label': 'Join Beta Test'
+                });
+                window.location.href = 'https://discord.gg/N2jSwSZr8g';
+            }
+    
+            document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+    
+                fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                })
+                .then(response => response.text())
+                .then(data => {
+                    alert(data);
+                    document.getElementById('waitlist-form').reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('There was an error adding your email to the waitlist.');
+                });
             });
-        });
-    </script>
-</body>
+        </script>
+    </body>
+    
 </html>
