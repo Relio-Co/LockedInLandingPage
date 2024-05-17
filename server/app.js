@@ -17,7 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const csvWriter = createCsvWriter({
     path: 'waitlist.csv',
     header: [
-        {id: 'email', title: 'Email'}
+        {id: 'email', title: 'Email'},
+        {id: 'timestamp', title: 'Timestamp'}
     ],
     append: true
 });
@@ -29,9 +30,11 @@ app.post('/api/waitlist', (req, res) => {
         return res.status(400).send('Email is required');
     }
 
-    csvWriter.writeRecords([{ email }])
+    const timestamp = new Date().toISOString();
+    
+    csvWriter.writeRecords([{ email, timestamp }])
         .then(() => {
-            res.status(200).send('Email added to waitlist');
+            res.status(200).send('Email added to waitlist!');
         })
         .catch(error => {
             console.error(error);
