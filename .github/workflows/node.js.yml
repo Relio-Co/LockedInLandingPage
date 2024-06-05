@@ -35,8 +35,8 @@ jobs:
       run: |
         ssh -F $HOME/.ssh/config lock1 << 'EOF'
         cd /home/maanav/app/
-        sudo docker build -t myapp .
-        sudo docker stop myapp_container || true
-        sudo docker rm myapp_container || true
-        sudo docker run -d --name myapp_container -p 80:3000 myapp
+        docker build -t myapp .
+        docker stop myapp_container || true
+        docker rm myapp_container || true
+        docker run -d --name myapp_container -p 80:3000 myapp
         EOF
