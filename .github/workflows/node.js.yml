@@ -27,20 +27,15 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         echo -e "Host lock1\n\tHostName ssh.golockedin.com\n\tProxyCommand cloudflared access ssh --hostname %h\n\tUser maanav\n\tIdentityFile ~/.ssh/id_rsa\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 
-    - name: Build Docker image
-      run: docker build -t myapp .
-
-    - name: Save Docker image to tar
-      run: docker save myapp > myapp.tar
-
-    - name: Copy Docker image to server
+    - name: Copy repository to server
       run: |
-        scp -F ~/.ssh/config myapp.tar lock1:/home/maanav/
+        rsync -avz -e "ssh -F ~/.ssh/config" . lock1:/home/maanav/app/
 
-    - name: Load Docker image on server and run
+    - name: Build and run Docker container on server
       run: |
         ssh -F ~/.ssh/config lock1 << 'EOF'
-        docker load < /home/maanav/myapp.tar
+        cd /home/maanav/app/
+        docker build -t myapp .
         docker stop myapp_container || true
         docker rm myapp_container || true
         docker run -d --name myapp_container -p 80:3000 myapp
