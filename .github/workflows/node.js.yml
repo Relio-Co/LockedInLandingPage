@@ -29,14 +29,14 @@ jobs:
 
     - name: Copy repository to server
       run: |
-        rsync -avz -e "ssh -F $HOME/.ssh/config" . lock1:/home/maanav/app/
+        rsync -avz -e "ssh -F $HOME/.ssh/config" . lock1:/home/maanav/LockedInLandingPage/
 
-    - name: Build and run Docker container on server
+    - name: Install dependencies and start app with pm2
       run: |
         ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/app/
-        docker build -t myapp .
-        docker stop myapp_container || true
-        docker rm myapp_container || true
-        docker run -d --name myapp_container -p 80:3000 myapp
+        cd /home/maanav/LockedInLandingPage/server
+        npm install
+        pm2 stop app || true
+        pm2 delete app || true
+        pm2 start app.js --name app
         EOF
