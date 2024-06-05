@@ -1,31 +1,40 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
-  build:
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache-dependency-path: /home/ubuntu/actions-runner/_work/LockedInLandingPage/LockedInLandingPage/
-          cache: "npm"
-      - run: pwd
-      - run: cat package.json
-      - run: npm install
-      - run: npm run build --if-present
-      - run: npm test
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo "Host ssh.golockedin.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+    - name: Build Docker image
+      run: docker build -t myapp .
+
+    - name: Save Docker image to tar
+      run: docker save myapp > myapp.tar
+
+    - name: Copy Docker image to server
+      run: |
+        scp -o ProxyCommand="cloudflared access ssh --hostname %h" myapp.tar ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/maanav/
+
+    - name: Load Docker image on server and run
+      run: |
+        ssh -o ProxyCommand="cloudflared access ssh --hostname %h" ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        docker load < /home/maanav/myapp.tar
+        docker stop myapp_container || true
+        docker rm myapp_container || true
+        docker run -d --name myapp_container -p 80:3000 myapp
+        EOF

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Read the detailed post from LockedIn.">
+    <title>Post - LockedIn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/" class="logo">LockedIn</a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/blog.html">Blog</a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+                <button><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="post-header">
+            <div class="container">
+                <h1 id="post-title"></h1>
+                <p id="post-date"></p>
+            </div>
+        </section>
+
+        <section class="post-content">
+            <div class="container">
+                <div id="post-body"></div>
+            </div>
+        </section>
+
+        <section class="recommended-posts">
+            <div class="container">
+                <h2>Recommended Posts</h2>
+                <div class="post-grid" id="recommended-posts">
+                    <!-- Recommended posts will be inserted here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/blog.html">Blog</a>
+            </div>
+            <p>&copy; 2023 LockedIn. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+
+        fetch(`/api/blog/${postId}`)
+            .then(response => response.json())
+            .then(post => {
+                document.getElementById('post-title').textContent = post.title;
+                document.getElementById('post-date').textContent = new Date(post.timestamp).toLocaleDateString();
+                document.getElementById('post-body').innerHTML = post.content;
+            })
+            .catch(error => console.error('Error fetching post:', error));
+
+        fetch('/api/blog')
+            .then(response => response.json())
+            .then(posts => {
+                const recommendedPostsContainer = document.getElementById('recommended-posts');
+                posts.filter(p => p.id !== postId).slice(0, 3).forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.classList.add('post-card');
+                    postElement.innerHTML = `
+                        <img src="https://source.unsplash.com/300x200/?blog,${post.id}" alt="Recommended Post Image">
+                        <div class="post-card-content">
+                            <h3>${post.title}</h3>
+                            <a href="/post.html?id=${post.id}">Read more</a>
+                        </div>
+                    `;
+                    recommendedPostsContainer.appendChild(postElement);
+                });
+            })
+            .catch(error => console.error('Error fetching recommended posts:', error));
+    </script>
+</body>
+
+</html>
