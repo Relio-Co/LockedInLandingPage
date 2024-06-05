@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Habit Tracking",
+    "icon": "/images/v1/icon1.png",
+    "description": "Input daily activities, categorize habits, and view reports and summaries of your progress."
+  },
+  {
+    "title": "Goal Setting",
+    "icon": "/images/v1/icon2.png",
+    "description": "Set achievable goals, plan your habit-building journey, and track your success."
+  },
+  {
+    "title": "Community Support",
+    "icon": "/images/v1/icon3.png",
+    "description": "Communicate with your groups, share progress, and motivate each other through group chats and challenges."
+  },
+  {
+    "title": "Personalized Experience",
+    "icon": "/images/v1/icon4.png",
+    "description": "Explore habits, groups, and insights with our unique omnidirectional scroll feature and personalized 'For You' page."
+  },
+  {
+    "title": "Rewards and Achievements",
+    "icon": "/images/v1/icon5.png",
+    "description": "Keep track of your daily habits, maintain streaks, and earn rewards for completing challenges and maintaining consistency."
+  },
+  {
+    "title": "Insights and Recommendations",
+    "icon": "/images/v1/icon6.png",
+    "description": "Receive insights and recommendations to improve your habits and achieve your goals."
+  }
+]

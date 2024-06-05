@@ -43,3 +43,12 @@ jobs:
         pm2 delete app || true
         pm2 start app.js --name app
         EOF
+    - name: Set up NextJS Staging
+      run: |
+        ssh -F $HOME/.ssh/config lock1 << 'EOF'
+        cd /home/maanav/LockedInLandingPage/staging
+        npm install
+        npx next build
+        pm2 stop staging || true
+        pm2 delete staging || true
+        pm2 start "npx next start" --name staging
