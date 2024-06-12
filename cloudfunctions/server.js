@@ -3,7 +3,7 @@ const admin = require('firebase-admin');
 const cors = require('cors');
 
 admin.initializeApp({
-  credential: admin.credential.cert(require('./servicefile.json')),
+  credential: admin.credential.cert(require('servicefile.json')),
 });
 
 const db = admin.firestore();

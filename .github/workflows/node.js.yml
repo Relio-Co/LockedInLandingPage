@@ -68,6 +68,7 @@ jobs:
       run: |
         ssh -F $HOME/.ssh/config lock1 << 'EOF'
         cd /home/maanav/LockedInLandingPage/cloudfunctions/cron
+        npm install node-cron
         pm2 stop updateCron || true
         pm2 delete updateCron || true
         pm2 start updateStreaks.js --name updateCron
