@@ -68,8 +68,17 @@ jobs:
       run: |
         ssh -F $HOME/.ssh/config lock1 << 'EOF'
         cd /home/maanav/LockedInLandingPage/cloudfunctions/cron
-        npm install firebase-admin
         pm2 stop updateCron || true
         pm2 delete updateCron || true
         pm2 start updateStreaks.js --name updateCron
+        EOF
+
+    - name: Set up and run server.js in cloudfunctions folder
+      run: |
+        ssh -F $HOME/.ssh/config lock1 << 'EOF'
+        cd /home/maanav/LockedInLandingPage/cloudfunctions
+        npm install
+        pm2 stop baseserver || true
+        pm2 delete baseserver || true
+        pm2 start server.js --name baseserver
         EOF
