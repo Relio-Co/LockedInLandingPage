@@ -7,25 +7,25 @@ const Posts = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const result = await axios.get('http://localhost:3001/api/posts');
+      const result = await axios.get('http://localhost:3002/api/posts');
       setPosts(result.data);
     };
     fetchPosts();
   }, []);
 
   const createPost = async () => {
-    const result = await axios.post('http://localhost:3001/api/posts', newPost);
+    const result = await axios.post('http://localhost:3002/api/posts', newPost);
     setPosts([...posts, result.data]);
     setNewPost({ caption: '', createdBy: '', groupId: '' });
   };
 
   const updatePost = async (id, updatedPost) => {
-    await axios.put(`http://localhost:3001/api/posts/${id}`, updatedPost);
+    await axios.put(`http://localhost:3002/api/posts/${id}`, updatedPost);
     setPosts(posts.map(post => (post.id === id ? updatedPost : post)));
   };
 
   const deletePost = async (id) => {
-    await axios.delete(`http://localhost:3001/api/posts/${id}`);
+    await axios.delete(`http://localhost:3002/api/posts/${id}`);
     setPosts(posts.filter(post => post.id !== id));
   };
 
