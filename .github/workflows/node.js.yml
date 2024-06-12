@@ -43,6 +43,7 @@ jobs:
         pm2 delete app || true
         pm2 start app.js --name app
         EOF
+
     - name: Set up NextJS Staging
       run: |
         ssh -F $HOME/.ssh/config lock1 << 'EOF'
@@ -51,3 +52,23 @@ jobs:
         pm2 stop staging || true
         pm2 delete staging || true
         pm2 start "npx next dev" --name staging
+        EOF
+
+    - name: Install dependencies and start admin panel with pm2
+      run: |
+        ssh -F $HOME/.ssh/config lock1 << 'EOF'
+        cd /home/maanav/LockedInLandingPage/admin-panel
+        npm install
+        pm2 stop admin || true
+        pm2 delete admin || true
+        pm2 start "npm start" --name admin
+        EOF
+
+    - name: Set up Cloud Functions cron job
+      run: |
+        ssh -F $HOME/.ssh/config lock1 << 'EOF'
+        cd /home/maanav/LockedInLandingPage/cloudfunctions/cron
+        pm2 stop updateCron || true
+        pm2 delete updateCron || true
+        pm2 start updateStreaks.js --name updateCron
+        EOF
