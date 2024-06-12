@@ -13,7 +13,7 @@ const port = 3002;
 app.use(cors());
 app.use(express.json());
 
-// CRUD operations for userss
+// CRUD operations for usersss
 app.get('/api/users', async (req, res) => {
   try {
     const usersSnapshot = await db.collection('users').get();
