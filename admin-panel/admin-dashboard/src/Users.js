@@ -7,25 +7,25 @@ const Users = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const result = await axios.get('http://localhost:3002/api/users');
+      const result = await axios.get('https://adminserver.golockedin.com/api/users');
       setUsers(result.data);
     };
     fetchUsers();
   }, []);
 
   const createUser = async () => {
-    const result = await axios.post('http://localhost:3002/api/users', newUser);
+    const result = await axios.post('https://adminserver.golockedin.com/api/users', newUser);
     setUsers([...users, result.data]);
     setNewUser({ username: '', email: '' });
   };
 
   const updateUser = async (id, updatedUser) => {
-    await axios.put(`http://localhost:3002/api/users/${id}`, updatedUser);
+    await axios.put(`https://adminserver.golockedin.com/api/users/${id}`, updatedUser);
     setUsers(users.map(user => (user.id === id ? updatedUser : user)));
   };
 
   const deleteUser = async (id) => {
-    await axios.delete(`http://localhost:3002/api/users/${id}`);
+    await axios.delete(`https://adminserver.golockedin.com/api/users/${id}`);
     setUsers(users.filter(user => user.id !== id));
   };
 

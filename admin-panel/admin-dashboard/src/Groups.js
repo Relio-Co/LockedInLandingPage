@@ -7,25 +7,25 @@ const Groups = () => {
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const result = await axios.get('http://localhost:3002/api/groups');
+      const result = await axios.get('https://adminserver.golockedin.com/api/groups');
       setGroups(result.data);
     };
     fetchGroups();
   }, []);
 
   const createGroup = async () => {
-    const result = await axios.post('http://localhost:3002/api/groups', newGroup);
+    const result = await axios.post('https://adminserver.golockedin.com/api/groups', newGroup);
     setGroups([...groups, result.data]);
     setNewGroup({ name: '', description: '' });
   };
 
   const updateGroup = async (id, updatedGroup) => {
-    await axios.put(`http://localhost:3002/api/groups/${id}`, updatedGroup);
+    await axios.put(`https://adminserver.golockedin.com/api/groups/${id}`, updatedGroup);
     setGroups(groups.map(group => (group.id === id ? updatedGroup : group)));
   };
 
   const deleteGroup = async (id) => {
-    await axios.delete(`http://localhost:3002/api/groups/${id}`);
+    await axios.delete(`https://adminserver.golockedin.com/api/groups/${id}`);
     setGroups(groups.filter(group => group.id !== id));
   };
 
