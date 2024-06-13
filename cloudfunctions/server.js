@@ -10,10 +10,16 @@ const db = admin.firestore();
 const app = express();
 const port = 3002;
 
-app.use(cors());
+// Allow CORS from the specific origin
+const corsOptions = {
+  origin: 'https://admin.golockedin.com',
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
-// CRUD operations for usersss //service file
+// CRUD operations for users
 app.get('/api/users', async (req, res) => {
   try {
     const usersSnapshot = await db.collection('users').get();
@@ -151,6 +157,7 @@ app.delete('/api/posts/:id', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+// Listen on all network interfaces
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running at http://0.0.0.0:${port}`);
 });
