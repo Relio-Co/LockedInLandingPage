@@ -10,76 +10,66 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Install Cloudflared
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wget
-        wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-        sudo dpkg -i cloudflared-linux-amd64.deb
+      - name: Install Cloudflared
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget
+          wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+          sudo dpkg -i cloudflared-linux-amd64.deb
 
-    - name: Set up SSH
-      run: |
-        mkdir -p $HOME/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
-        chmod 600 $HOME/.ssh/id_rsa
-        echo -e "Host lock1\n\tHostName ssh.golockedin.com\n\tProxyCommand cloudflared access ssh --hostname %h\n\tUser maanav\n\tIdentityFile $HOME/.ssh/id_rsa\n\tStrictHostKeyChecking no\n" > $HOME/.ssh/config
+      - name: Set up SSH
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+          echo -e "Host lock1\n\tHostName ssh.golockedin.com\n\tProxyCommand cloudflared access ssh --hostname %h\n\tUser maanav\n\tIdentityFile $HOME/.ssh/id_rsa\n\tStrictHostKeyChecking no\n" > $HOME/.ssh/config
 
-    - name: Update repository on server
-      run: |
-        ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/LockedInLandingPage
-        git pull origin main
-        EOF
+      - name: Update repository on server
+        run: |
+          ssh -F $HOME/.ssh/config lock1 << 'EOF'
+          cd /home/maanav/LockedInLandingPage
+          git pull origin main
+          EOF
 
-    - name: Install dependencies and start app with pm2
-      run: |
-        ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/LockedInLandingPage/server
-        npm install
-        pm2 stop app || true
-        pm2 delete app || true
-        pm2 start app.js --name app
-        EOF
+      - name: Install dependencies and start app with pm2
+        run: |
+          ssh -F $HOME/.ssh/config lock1 << 'EOF'
+          cd /home/maanav/LockedInLandingPage/server
+          npm install
+          pm2 stop app || true
+          pm2 delete app || true
+          pm2 start app.js --name app
+          EOF
 
-    - name: Set up NextJS Staging
-      run: |
-        ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/LockedInLandingPage/staging
-        npm install
-        pm2 stop staging || true
-        pm2 delete staging || true
-        pm2 start "npx next dev" --name staging
-        EOF
+      - name: Set up NextJS Staging
+        run: |
+          ssh -F $HOME/.ssh/config lock1 << 'EOF'
+          cd /home/maanav/LockedInLandingPage/staging
+          npm install
+          pm2 stop staging || true
+          pm2 delete staging || true
+          pm2 start "npx next dev" --name staging
+          EOF
 
-    - name: Install dependencies and start admin panel with pm2
-      run: |
-        ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/LockedInLandingPage/admin-panel
-        npm install
-        pm2 stop admin || true
-        pm2 delete admin || true
-        pm2 start "npm start" --name admin
-        EOF
+      - name: Install dependencies and start admin panel with pm2
+        run: |
+          ssh -F $HOME/.ssh/config lock1 << 'EOF'
+          cd /home/maanav/LockedInLandingPage/admin-panel
+          npm install
+          pm2 stop admin || true
+          pm2 delete admin || true
+          pm2 start "npm start" --name admin
+          EOF
 
-    - name: Set up Cloud Functions cron job
-      run: |
-        ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/LockedInLandingPage/cloudfunctions/cron
-        npm install node-cron
-        pm2 stop updateCron || true
-        pm2 delete updateCron || true
-        pm2 start updateStreaks.js --name updateCron
-        EOF
-
-    - name: Set up and run server.js in cloudfunctions folder
-      run: |
-        ssh -F $HOME/.ssh/config lock1 << 'EOF'
-        cd /home/maanav/LockedInLandingPage/cloudfunctions
-        npm install
-        pm2 stop baseserver || true
-        pm2 delete baseserver || true
-        pm2 start server.js --name baseserver
-        EOF
+      - name: Set up and run server.js in cloudfunctions folder
+        run: |
+          ssh -F $HOME/.ssh/config lock1 << 'EOF'
+          cd /home/maanav/LockedInLandingPage/cloudfunctions
+          npm install
+          pm2 stop baseserver || true
+          pm2 delete baseserver || true
+          pm2 start server.js --name baseserver
+          EOF
