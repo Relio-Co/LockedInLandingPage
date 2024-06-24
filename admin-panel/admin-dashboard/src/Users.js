@@ -1,32 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import serverConfig from './serverConfig';
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({ username: '', email: '' });
+  const apiEndpoint = serverConfig.apiEndpoint;
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const result = await axios.get('https://adminserver.golockedin.com/api/users');
+      const result = await axios.get(`${apiEndpoint}/api/users`);
       setUsers(result.data);
     };
     fetchUsers();
   }, []);
 
   const createUser = async () => {
-    const result = await axios.post('https://adminserver.golockedin.com/api/users', newUser);
+    const result = await axios.post(`${apiEndpoint}/api/users, newUser`);
     setUsers([...users, result.data]);
     setNewUser({ username: '', email: '' });
   };
 
   const updateUser = async (id, updatedUser) => {
-    await axios.put(`https://adminserver.golockedin.com/api/users/${id}`, updatedUser);
-    setUsers(users.map(user => (user.id === id ? updatedUser : user)));
+    await axios.put(`${apiEndpoint}/api/users/${id}`, updatedUser);
+    setUsers(users.map((user) => (user.id === id ? updatedUser : user)));
   };
-
   const deleteUser = async (id) => {
-    await axios.delete(`https://adminserver.golockedin.com/api/users/${id}`);
-    setUsers(users.filter(user => user.id !== id));
+    await axios.delete(`${apiEndpoint}/api/users/${id}`);
+    setUsers(users.filter((user) => user.id !== id));
   };
 
   return (
@@ -46,7 +46,7 @@ const Users = () => {
       />
       <button onClick={createUser}>Create User</button>
       <ul>
-        {users.map(user => (
+        {users.map((user) => (
           <li key={user.id}>
             {user.username} ({user.email})
             <button onClick={() => deleteUser(user.id)}>Delete</button>

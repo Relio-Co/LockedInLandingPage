@@ -1,31 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import serverConfig from './serverConfig';
 
 const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ caption: '', createdBy: '', groupId: '' });
+  const apiEndpoint = serverConfig.apiEndpoint;
+  
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const result = await axios.get('https://adminserver.golockedin.com/api/posts');
+      const result = await axios.get(`${apiEndpoint}/api/posts`);
       setPosts(result.data);
     };
     fetchPosts();
   }, []);
 
   const createPost = async () => {
-    const result = await axios.post('https://adminserver.golockedin.com/api/posts', newPost);
+    const result = await axios.post(`${apiEndpoint}/api/posts`, newPost);
     setPosts([...posts, result.data]);
     setNewPost({ caption: '', createdBy: '', groupId: '' });
   };
 
   const updatePost = async (id, updatedPost) => {
-    await axios.put(`https://adminserver.golockedin.com/api/posts/${id}`, updatedPost);
+    await axios.put(`${apiEndpoint}/api/posts/${id}`, updatedPost);
     setPosts(posts.map(post => (post.id === id ? updatedPost : post)));
   };
 
   const deletePost = async (id) => {
-    await axios.delete(`https://adminserver.golockedin.com/api/posts/${id}`);
+    await axios.delete(`${apiEndpoint}/api/posts/${id}`);
     setPosts(posts.filter(post => post.id !== id));
   };
 
@@ -33,26 +36,26 @@ const Posts = () => {
     <div>
       <h2>Posts</h2>
       <input
-        type="text"
+        type='text'
         value={newPost.caption}
         onChange={(e) => setNewPost({ ...newPost, caption: e.target.value })}
-        placeholder="Caption"
+        placeholder='Caption'
       />
       <input
-        type="text"
+        type='text'
         value={newPost.createdBy}
         onChange={(e) => setNewPost({ ...newPost, createdBy: e.target.value })}
-        placeholder="Created By"
+        placeholder='Created By'
       />
       <input
-        type="text"
+        type='text'
         value={newPost.groupId}
         onChange={(e) => setNewPost({ ...newPost, groupId: e.target.value })}
-        placeholder="Group ID"
+        placeholder='Group ID'
       />
       <button onClick={createPost}>Create Post</button>
       <ul>
-        {posts.map(post => (
+        {posts.map((post) => (
           <li key={post.id}>
             {post.caption} by {post.createdBy}
             <button onClick={() => deletePost(post.id)}>Delete</button>
